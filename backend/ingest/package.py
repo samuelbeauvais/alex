@@ -5,10 +5,28 @@ Works on Windows, Mac, and Linux.
 """
 
 import os
+import stat
 import sys
 import shutil
 import zipfile
 from pathlib import Path
+
+
+def remove_tree(path):
+    """Delete a directory tree, clearing read-only flags that block deletion on Windows.
+
+    Some packages (e.g. boto3's data files) are copied with the read-only attribute set.
+    shutil.rmtree then fails with PermissionError [WinError 5] on Windows unless the
+    attribute is cleared first.
+    """
+    def _clear_readonly_and_retry(func, failed_path, _exc_info):
+        os.chmod(failed_path, stat.S_IWRITE)
+        func(failed_path)
+
+    if sys.version_info >= (3, 12):
+        shutil.rmtree(path, onexc=_clear_readonly_and_retry)
+    else:
+        shutil.rmtree(path, onerror=_clear_readonly_and_retry)
 
 
 def create_deployment_package():
@@ -23,7 +41,7 @@ def create_deployment_package():
     
     # Clean up previous builds
     if build_dir.exists():
-        shutil.rmtree(build_dir)
+        remove_tree(build_dir)
     if zip_path.exists():
         os.remove(zip_path)
     
@@ -73,7 +91,7 @@ def create_deployment_package():
                 zipf.write(file_path, arcname)
     
     # Clean up build directory
-    shutil.rmtree(build_dir)
+    remove_tree(build_dir)
     
     # Get file size
     size_mb = zip_path.stat().st_size / (1024 * 1024)
