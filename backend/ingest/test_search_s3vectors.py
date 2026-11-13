@@ -5,8 +5,8 @@ This demonstrates how to search the indexed documents.
 
 import os
 import json
-import boto3
-from dotenv import load_dotenv
+import boto3  # pyright: ignore[reportMissingImports]
+from dotenv import load_dotenv  # pyright: ignore[reportMissingImports]
 from pathlib import Path
 
 # Load environment variables from project root
