@@ -1,3 +1,16 @@
+## Samuel Beauvais — my work in this repo
+
+Fork of Ed Donner's ALEX capstone for the course "AI in Production." My completed stages:
+
+- **Guide 1** — project setup and AWS permissions
+- **Guide 2** — SageMaker serverless embedding endpoint
+- **Guide 3** — ingestion pipeline: Lambda + API Gateway storing embeddings in S3 Vectors, with semantic search
+- **Guide 4** — researcher agent on Amazon Bedrock, run end-to-end
+
+In progress: Guides 5–8 (Aurora database, multi-agent orchestration, Next.js frontend with Clerk authentication, enterprise hardening).
+
+---
+
 # Alex - the Agentic Learning Equities Explainer
 
 ## Multi-agent Enterprise-Grade SaaS Financial Planner
